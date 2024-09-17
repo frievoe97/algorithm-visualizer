@@ -2,3 +2,13 @@ RewriteEngine On
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [OR]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://algo-viz.friedrichvoelkers.de/$1 [L,R=301]
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Leite alles zu index.html weiter, außer die vorhandenen Dateien
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>

@@ -29,6 +29,7 @@ const Sorting = () => {
   const [array, setArray] = useState([]);
   const [originalArray, setOriginalArray] = useState([]);
   const { generateArray } = useSortableArray();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   // Funktion zum Generieren und Setzen des Arrays
   // const resetArray = (useSeed = true) => {
@@ -48,7 +49,11 @@ const Sorting = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      resetArray(true); // Array neu erstellen, wenn Fenstergröße sich ändert
+      const newWidth = window.innerWidth;
+      if (newWidth !== windowWidth) {
+        setWindowWidth(newWidth); // Aktualisiere die Breite
+        resetArray(true); // Array neu erstellen, wenn sich die Breite ändert
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -56,7 +61,7 @@ const Sorting = () => {
     return () => {
       window.removeEventListener("resize", handleResize); // Event-Listener bereinigen
     };
-  }, []);
+  }, [windowWidth]); // Abhängigkeit von windowWidth
 
   useEffect(() => {
     resetArray(true); // Initial zufälliges Array ohne Seed

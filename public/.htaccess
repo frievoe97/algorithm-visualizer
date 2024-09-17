@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [OR]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://algo-viz.friedrichvoelkers.de/$1 [L,R=301]

@@ -23,7 +23,7 @@ function generateSitemap() {
 </urlset>`;
 
   // Speichere die Sitemap in das `public`-Verzeichnis
-  writeFileSync(resolve("./public/sitemap.xml"), sitemap);
+  writeFileSync(resolve("./dist/sitemap.xml"), sitemap);
   console.log("Sitemap generated successfully!");
 }
 

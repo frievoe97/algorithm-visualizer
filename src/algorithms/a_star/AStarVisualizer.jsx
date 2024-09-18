@@ -44,8 +44,10 @@ const AStarVisualizer = forwardRef(({ onGridButtonClick }, ref) => {
   };
 
   const animateAStar = (nodesInOrder, shortestPathNodes) => {
+    console.log("Animate A*");
     const totalSteps = nodesInOrder.length;
     for (let i = 0; i <= totalSteps; i++) {
+      console.log(`Step: ${i}`);
       if (i === totalSteps) {
         setTimeout(() => {
           animateShortestPath(shortestPathNodes);

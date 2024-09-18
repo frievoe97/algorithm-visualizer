@@ -111,8 +111,8 @@ const Grid = ({ onButtonClick }) => {
       setStartNode(null);
       setEndNode(null);
 
-      clearGrid();
-      resetGridVisuals();
+      // clearGrid();
+      // resetGridVisuals();
     };
 
     setTimeout(handleResize, 0);

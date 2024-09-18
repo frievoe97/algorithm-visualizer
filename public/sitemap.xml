@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+      <loc>https://algo-viz.friedrichvoelkers.de/</loc>
+      <lastmod>2024-09-18T11:50:20.579Z</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+    </url><url>
+      <loc>https://algo-viz.friedrichvoelkers.de/pathfinding</loc>
+      <lastmod>2024-09-18T11:50:20.579Z</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+    </url><url>
+      <loc>https://algo-viz.friedrichvoelkers.de/sorting</loc>
+      <lastmod>2024-09-18T11:50:20.579Z</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+    </url>
+</urlset>

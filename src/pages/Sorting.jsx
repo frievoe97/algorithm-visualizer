@@ -1,16 +1,28 @@
 // src/pages/Sorting.jsx
+
 import React, { useState, useEffect } from "react";
 import AlgorithmPageLayout from "../layouts/AlgorithmPageLayout";
-import QuickSortVisualizer from "../algorithms/sorting/quicksort/QuickSortVisualizer";
-import MergeSortVisualizer from "../algorithms/sorting/mergesort/MergeSortVisualizer";
-import BubbleSortVisualizer from "../algorithms/sorting/bubblesort/BubbleSortVisualizer";
+import QuickSort from "../algorithms/sorting/quicksort/QuickSort";
+import MergeSort from "../algorithms/sorting/mergesort/MergeSort";
+import BubbleSort from "../algorithms/sorting/bubblesort/BubbleSort";
+
+import SelectionSort from "../algorithms/sorting/selectionsort/SelectionSort";
+import InsertionSort from "../algorithms/sorting/insertionsort/InsertionSort";
+import HeapSort from "../algorithms/sorting/heapsort/HeapSort";
+import ShellSort from "../algorithms/sorting/shellsort/ShellSort";
+import RandomSort from "../algorithms/sorting/bogosort/RandomSort";
+
 import { useSortableArray } from "../hooks/useSortableArray";
 
 const algorithmOptions = [
   { value: "quicksort", label: "Quick Sort" },
   { value: "mergesort", label: "Merge Sort" },
   { value: "bubblesort", label: "Bubble Sort" },
-  // Weitere Algorithmen
+  { value: "selectionsort", label: "Selection Sort" },
+  { value: "insertionsort", label: "Insertion Sort" },
+  { value: "heapsort", label: "Heap Sort" },
+  { value: "shellsort", label: "Shell Sort" },
+  { value: "randomsort", label: "Random Sort" },
 ];
 
 const algorithmDescriptions = {
@@ -20,29 +32,28 @@ const algorithmDescriptions = {
     "Merge Sort is a divide-and-conquer algorithm that divides the array into halves, sorts them, and then merges the sorted halves.",
   bubblesort:
     "Bubble Sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.",
-  // Weitere Beschreibungen
+  selectionsort:
+    "Selection Sort selects the smallest element from an unsorted list in each iteration and places that element at the beginning of the unsorted list.",
+  insertionsort:
+    "Insertion Sort builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms.",
+  heapsort:
+    "Heap Sort is a comparison-based sorting technique based on Binary Heap data structure.",
+  shellsort:
+    "Shell Sort is a generalization of insertion sort that allows the exchange of items that are far apart.",
+  randomsort:
+    "Random Sort (Bogosort) repeatedly shuffles the array until it is sorted. Highly inefficient but fun!",
 };
 
 const Sorting = () => {
   const [algorithm, setAlgorithm] = useState("quicksort");
-  const [seed, setSeed] = useState(""); // Seed kann leer oder ein Wert sein
+  const [seed, setSeed] = useState("");
   const [array, setArray] = useState([]);
   const [originalArray, setOriginalArray] = useState([]);
   const { generateArray } = useSortableArray();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  // Funktion zum Generieren und Setzen des Arrays
-  // const resetArray = (useSeed = true) => {
-  //   console.log("Resetting array...");
-  //   console.log("Seed:", seed);
-  //   const newArray = generateArray(useSeed ? seed : Math.random()); // Falls Seed leer, wird ein zufälliges Array generiert
-  //   setArray(newArray);
-  //   setOriginalArray(newArray.slice());
-  // };
-
   const resetArray = () => {
-    console.log("Resetting array without seed...");
-    const newArray = generateArray(Math.random().toString()); // Zufälliges Array ohne Seed
+    const newArray = generateArray(Math.random().toString());
     setArray(newArray);
     setOriginalArray(newArray.slice());
   };
@@ -51,36 +62,31 @@ const Sorting = () => {
     const handleResize = () => {
       const newWidth = window.innerWidth;
       if (newWidth !== windowWidth) {
-        setWindowWidth(newWidth); // Aktualisiere die Breite
-        resetArray(true); // Array neu erstellen, wenn sich die Breite ändert
+        setWindowWidth(newWidth);
+        resetArray();
       }
     };
 
     window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize); // Event-Listener bereinigen
+      window.removeEventListener("resize", handleResize);
     };
-  }, [windowWidth]); // Abhängigkeit von windowWidth
+  }, [windowWidth]);
 
   useEffect(() => {
-    resetArray(true); // Initial zufälliges Array ohne Seed
-    handleAlgorithmChange({ target: { value: "mergesort" } }); // Algorithmuswechsel auslösen
+    resetArray();
+    handleAlgorithmChange({ target: { value: "mergesort" } });
   }, []);
 
-  // Seed ändern und sofort das Array generieren
   const handleSeedChange = (e) => {
     setSeed(e.target.value);
   };
 
-  // Array neu generieren, wenn der Algorithmus geändert wird
   const handleAlgorithmChange = (e) => {
     setAlgorithm(e.target.value);
-    resetArray(true);
+    resetArray();
   };
-
-  // Seed-Eingabefeld für das Layout
-  // Updated controls element for better mobile display
 
   const controls = (
     <div className="flex flex-col sm:flex-row sm:items-center mb-4 space-y-4 sm:space-y-0 sm:space-x-4">
@@ -103,8 +109,13 @@ const Sorting = () => {
     </div>
   );
 
-  // Beschreibung für den ausgewählten Algorithmus erhalten
   const description = algorithmDescriptions[algorithm];
+
+  const algorithmProps = {
+    array,
+    setArray,
+    originalArray,
+  };
 
   return (
     <AlgorithmPageLayout
@@ -114,33 +125,18 @@ const Sorting = () => {
       onAlgorithmChange={handleAlgorithmChange}
       controls={controls}
     >
-      {/* Algorithmusbeschreibung */}
       <div className="mb-4">
         <p>{description}</p>
       </div>
-      {/* Algorithmus-spezifische Visualisierungen */}
       <div className="flex justify-center">
-        {algorithm === "quicksort" && (
-          <QuickSortVisualizer
-            array={array}
-            setArray={setArray}
-            originalArray={originalArray}
-          />
-        )}
-        {algorithm === "mergesort" && (
-          <MergeSortVisualizer
-            array={array}
-            setArray={setArray}
-            originalArray={originalArray}
-          />
-        )}
-        {algorithm === "bubblesort" && (
-          <BubbleSortVisualizer
-            array={array}
-            setArray={setArray}
-            originalArray={originalArray}
-          />
-        )}
+        {algorithm === "quicksort" && <QuickSort {...algorithmProps} />}
+        {algorithm === "mergesort" && <MergeSort {...algorithmProps} />}
+        {algorithm === "bubblesort" && <BubbleSort {...algorithmProps} />}
+        {algorithm === "selectionsort" && <SelectionSort {...algorithmProps} />}
+        {algorithm === "insertionsort" && <InsertionSort {...algorithmProps} />}
+        {algorithm === "heapsort" && <HeapSort {...algorithmProps} />}
+        {algorithm === "shellsort" && <ShellSort {...algorithmProps} />}
+        {algorithm === "randomsort" && <RandomSort {...algorithmProps} />}
       </div>
     </AlgorithmPageLayout>
   );

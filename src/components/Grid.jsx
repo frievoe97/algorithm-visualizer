@@ -110,6 +110,9 @@ const Grid = ({ onButtonClick }) => {
       setGrid(newGrid);
       setStartNode(null);
       setEndNode(null);
+
+      clearGrid();
+      resetGridVisuals();
     };
 
     setTimeout(handleResize, 0);
